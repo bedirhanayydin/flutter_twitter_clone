@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_twitter_clone/services/auth_service.dart';
+import 'package:flutter_twitter_clone/strings/strings.dart';
 import 'package:flutter_twitter_clone/ui/auth/forgot_password.dart';
 import 'package:flutter_twitter_clone/ui/auth/intro_screen.dart';
+import 'package:flutter_twitter_clone/ui/feed/home_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SignIn extends StatefulWidget {
@@ -14,6 +18,8 @@ class _SignInState extends State<SignIn> {
   var size, height, width;
   late final emailController = TextEditingController();
   late final passwordController = TextEditingController();
+  bool _isLoading = false;
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +115,7 @@ class _SignInState extends State<SignIn> {
 
   GestureDetector loginButton() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => _loginWithEmail(),
       child: Container(
         alignment: Alignment.center,
         width: 335,
@@ -130,9 +136,55 @@ class _SignInState extends State<SignIn> {
     );
   }
 
+  _loginWithEmail() {
+    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      _authService
+          .signIn(
+        emailController.text.trim(),
+        passwordController.text.trim(),
+      )
+          .then((value) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (route) => false);
+      }).catchError((error) {
+        if (error.toString().contains('invalid-email')) {
+          _warningToast(TwitterCloneText.loginWrongEmailText);
+        } else if (error.toString().contains('user-not-found')) {
+          _warningToast(TwitterCloneText.loginNoAccountText);
+        } else if (error.toString().contains('wrong-password')) {
+          _warningToast(TwitterCloneText.loginWrongPasswordText);
+        } else {
+          _warningToast(TwitterCloneText.errorText);
+        }
+      }).whenComplete(() {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    } else {
+      _warningToast(TwitterCloneText.emptyText);
+    }
+  }
+
+  Future<bool?> _warningToast(String text) {
+    return Fluttertoast.showToast(
+        msg: text,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        fontSize: 25);
+  }
+
   GestureDetector googleButton() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Fluttertoast.showToast(msg: 'Not Active :(');
+      },
       child: Container(
         alignment: Alignment.center,
         width: 335,

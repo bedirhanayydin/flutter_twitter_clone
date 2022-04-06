@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_twitter_clone/services/auth_service.dart';
+import 'package:flutter_twitter_clone/strings/strings.dart';
 import 'package:flutter_twitter_clone/ui/auth/intro_screen.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_twitter_clone/ui/auth/sign_in.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -11,10 +14,12 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   var size, height, width;
-  late final emailController = TextEditingController();
+  final emailController = TextEditingController();
   late final passwordController = TextEditingController();
   late final nameController = TextEditingController();
   late final rePasswordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +43,7 @@ class _SignUpState extends State<SignUp> {
           const SizedBox(
             height: 70,
           ),
+          if (_isLoading) const CircularProgressIndicator(),
         ],
       ),
     );
@@ -147,7 +153,7 @@ class _SignUpState extends State<SignUp> {
 
   GestureDetector signUpButton() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => _registerUser(),
       child: Container(
         alignment: Alignment.center,
         width: 335,
@@ -186,5 +192,62 @@ class _SignUpState extends State<SignUp> {
         style: TextStyle(color: Colors.black),
       ),
     );
+  }
+
+  Future<void> _registerUser() async {
+    if (nameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty &&
+        rePasswordController.text.isNotEmpty &&
+        passwordController.text == rePasswordController.text) {
+      setState(() {
+        _isLoading = true;
+      });
+      if (!validateEmail(emailController.text.trim())) {
+        await _warningToast(TwitterCloneText.loginWrongEmailText);
+      } else {
+        _authService
+            .createPerson(
+          nameController.text.trim(),
+          emailController.text.trim(),
+          passwordController.text.trim(),
+        )
+            .then((value) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const SignIn()),
+              (route) => false);
+        }).catchError((error) {
+          _warningToast(TwitterCloneText.errorText);
+        }).whenComplete(() {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+      }
+    } else {
+      _warningToast(TwitterCloneText.emptyText);
+    }
+  }
+
+  Future<bool?> _warningToast(String text) {
+    return Fluttertoast.showToast(
+        msg: text,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        fontSize: 25);
+  }
+
+  validateEmail(String? value) {
+    String pattern =
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?)*$";
+    RegExp regex = RegExp(pattern);
+    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
