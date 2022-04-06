@@ -87,6 +87,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   AppBar buildAppBarWidget() {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       elevation: 0,
       title: Row(
