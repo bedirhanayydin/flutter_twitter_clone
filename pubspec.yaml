@@ -41,6 +41,7 @@ dependencies:
   firebase_storage: ^10.2.10
   cloud_firestore: ^3.1.10
   fluttertoast: ^8.0.9
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,7 @@ flutter:
   assets:
      - assets/images/twitter_bird.png
      - assets/images/icon.png
+     - assets/images/profile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

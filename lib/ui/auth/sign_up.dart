@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_twitter_clone/constants/images.dart';
 import 'package:flutter_twitter_clone/services/auth_service.dart';
 import 'package:flutter_twitter_clone/constants/strings.dart';
 import 'package:flutter_twitter_clone/ui/auth/intro_screen.dart';

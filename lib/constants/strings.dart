@@ -19,5 +19,6 @@ class TwitterCloneText {
   static String loginWrongPasswordText = "Wrong password...";
   static String loginWrongEmailText = "Please correct your e-mail address.";
 
+  //Default Values
   TwitterCloneText._();
 }

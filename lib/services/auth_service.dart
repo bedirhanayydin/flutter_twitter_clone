@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   //SignIn
   Future<User?> signIn(String email, String password) async {
     var user = await _auth.signInWithEmailAndPassword(
@@ -18,7 +17,11 @@ class AuthService {
   }
 
   //SignUp
-  Future<User?> createPerson(String name, String email, String password) async {
+  Future<User?> createPerson(
+    String name,
+    String email,
+    String password,
+  ) async {
     var user = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     //Cloud Firestore Collection Added
@@ -30,7 +33,16 @@ class AuthService {
     return user.user;
   }
 
+  //Password Reset
   Future passwordReset(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<String?> getCurrentUser() async {
+    final uid = _auth.currentUser;
+    if (uid != null) {
+      await uid.reload();
+    }
+    return uid?.email;
   }
 }

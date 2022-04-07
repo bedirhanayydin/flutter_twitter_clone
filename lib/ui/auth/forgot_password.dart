@@ -12,8 +12,6 @@ class ForgotPassword extends StatefulWidget {
   State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
-
 class _ForgotPasswordState extends State<ForgotPassword> {
   late final emailController = TextEditingController();
   final AuthService _authService = AuthService();
