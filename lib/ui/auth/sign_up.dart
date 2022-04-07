@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/services/auth_service.dart';
-import 'package:flutter_twitter_clone/strings/strings.dart';
+import 'package:flutter_twitter_clone/constants/strings.dart';
 import 'package:flutter_twitter_clone/ui/auth/intro_screen.dart';
 import 'package:flutter_twitter_clone/ui/auth/sign_in.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -234,8 +234,9 @@ class _SignUpState extends State<SignUp> {
     return Fluttertoast.showToast(
         msg: text,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        fontSize: 25);
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFF666666),
+        fontSize: 15);
   }
 
   validateEmail(String? value) {

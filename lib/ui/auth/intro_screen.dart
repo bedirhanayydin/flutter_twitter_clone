@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_twitter_clone/constants/images.dart';
+import 'package:flutter_twitter_clone/constants/strings.dart';
 import 'package:flutter_twitter_clone/ui/auth/sign_in.dart';
 import 'package:flutter_twitter_clone/ui/auth/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,17 +15,16 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  final String iconPath = 'assets/images/twitter_bird.png';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: buildAppBarWidget(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            "See what's happening in\nthe world right now.",
+            TwitterCloneText.introScreenTitle,
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -59,7 +60,7 @@ class _IntroScreenState extends State<IntroScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 65.0, vertical: 50),
             child: Row(
               children: [
-                Text('Have an account already? ',
+                Text(TwitterCloneText.introScreenSubTitle,
                     style: GoogleFonts.roboto(
                       fontSize: 15,
                       color: Colors.grey[700],
@@ -94,7 +95,7 @@ class _IntroScreenState extends State<IntroScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            iconPath,
+            TwitterCloneImages.twitterBird,
             fit: BoxFit.contain,
             height: 30,
           ),

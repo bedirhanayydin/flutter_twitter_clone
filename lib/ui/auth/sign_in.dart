@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/services/auth_service.dart';
-import 'package:flutter_twitter_clone/strings/strings.dart';
+import 'package:flutter_twitter_clone/constants/strings.dart';
 import 'package:flutter_twitter_clone/ui/auth/forgot_password.dart';
 import 'package:flutter_twitter_clone/ui/auth/intro_screen.dart';
 import 'package:flutter_twitter_clone/ui/feed/home_page.dart';
@@ -41,23 +41,25 @@ class _SignInState extends State<SignIn> {
           const SizedBox(
             height: 70,
           ),
-          GestureDetector(
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ForgotPassword())),
-            child: const Text(
-              'Forgot password?',
-              style: TextStyle(
-                  color: Color.fromARGB(255, 42, 152, 241),
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
+          forgotPassword(context),
           const SizedBox(
             height: 70,
           ),
           googleButton(),
         ],
+      ),
+    );
+  }
+
+  GestureDetector forgotPassword(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ForgotPassword())),
+      child: const Text(
+        'Forgot password?',
+        style: TextStyle(
+            color: Color.fromARGB(255, 42, 152, 241),
+            fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -176,8 +178,9 @@ class _SignInState extends State<SignIn> {
     return Fluttertoast.showToast(
         msg: text,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        fontSize: 25);
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFF666666),
+        fontSize: 15);
   }
 
   GestureDetector googleButton() {
