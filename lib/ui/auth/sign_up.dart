@@ -206,24 +206,24 @@ class _SignUpState extends State<SignUp> {
       });
       if (!validateEmail(emailController.text.trim())) {
         await _warningToast(TwitterCloneText.loginWrongEmailText);
+        _isLoading = false;
       } else {
         _authService
             .createPerson(
-          nameController.text.trim(),
-          emailController.text.trim(),
-          passwordController.text.trim(),
-        )
-            .then((value) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const SignIn()),
-              (route) => false);
-        }).catchError((error) {
-          _warningToast(TwitterCloneText.errorText);
-        }).whenComplete(() {
+              nameController.text.trim(),
+              emailController.text.trim(),
+              passwordController.text.trim(),
+            )
+            .then((value) => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const SignUp()),
+                (route) => false))
+            .whenComplete(() {
           setState(() {
             _isLoading = false;
           });
+        }).catchError((error) {
+          _warningToast(TwitterCloneText.errorText);
         });
       }
     } else {

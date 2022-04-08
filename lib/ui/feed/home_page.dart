@@ -11,15 +11,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final AuthService _authService = AuthService();
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white38,
       body: Center(
-        child: Text(_authService.getCurrentUser() == null
-            ? "BOŞ"
-            : _authService.getCurrentUser().toString()),
+        child: Text(firebaseAuth.currentUser!.uid.toString()),
       ),
     );
   }
